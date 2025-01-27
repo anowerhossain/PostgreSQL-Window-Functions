@@ -45,6 +45,6 @@ Results
 
 Explanation of Results:
 
-ROW_NUMBER: Assigns a unique number to each row, even for rows with the same sales_amount.
-RANK: Tied rows receive the same rank, but the next rank has a gap.
-DENSE_RANK: Similar to RANK, but there are no gaps between ranks for tied rows.
+- ROW_NUMBER: Assigns a unique number to each row, even for rows with the same sales_amount.
+- RANK: Tied rows receive the same rank, but the next rank has a gap.
+- DENSE_RANK: Similar to RANK, but there are no gaps between ranks for tied rows.
