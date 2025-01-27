@@ -32,3 +32,13 @@ SELECT
 FROM sales;
 ```
 Results
+
+| Region | Salesperson ID | Sales Amount | Row Number | Rank | Dense Rank |
+|--------|----------------|--------------|------------|------|------------|
+| North  | 1              | 500          | 1          | 1    | 1          |
+| North  | 2              | 500          | 2          | 1    | 1          |
+| North  | 3              | 400          | 3          | 3    | 2          |
+| South  | 4              | 700          | 1          | 1    | 1          |
+| South  | 5              | 700          | 2          | 1    | 1          |
+| South  | 6              | 600          | 3          | 3    | 2          |
+
