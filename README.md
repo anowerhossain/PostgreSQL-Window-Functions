@@ -48,3 +48,39 @@ Explanation of Results:
 - ROW_NUMBER: Assigns a unique number to each row, even for rows with the same sales_amount.
 - RANK: Tied rows receive the same rank, but the next rank has a gap.
 - DENSE_RANK: Similar to RANK, but there are no gaps between ranks for tied rows.
+
+## LEAD and LAG Functions in PostgreSQL?
+The LEAD and LAG window functions in PostgreSQL allow you to access data from the next row (LEAD) or the previous row (LAG) in the result set, without requiring a self-join. These functions are especially useful for performing comparative analysis within a dataset.
+
+- Syntax
+```sql
+LEAD(column_name, [offset], [default_value]) OVER (PARTITION BY column_name ORDER BY column_name)
+
+LAG(column_name, [offset], [default_value]) OVER (PARTITION BY column_name ORDER BY column_name)
+```
+- Using LEAD and LAG
+
+```sql
+SELECT 
+    region,
+    salesperson_id,
+    sales_amount,
+    LAG(sales_amount) OVER (PARTITION BY region ORDER BY sales_amount DESC) AS previous_sales,
+    LEAD(sales_amount) OVER (PARTITION BY region ORDER BY sales_amount DESC) AS next_sales
+FROM sales;
+```
+Results 
+
+| Region | Salesperson ID | Sales Amount | Previous Sales | Next Sales |
+|--------|----------------|--------------|----------------|------------|
+| North  | 1              | 500          | NULL           | 400        |
+| North  | 2              | 400          | 500            | 300        |
+| North  | 3              | 300          | 400            | NULL       |
+| South  | 4              | 700          | NULL           | 600        |
+| South  | 5              | 600          | 700            | 500        |
+| South  | 6              | 500          | 600            | NULL       |
+
+Explanation
+
+- LAG(sales_amount): Retrieves the sales_amount from the previous row within the same region (based on descending order of sales_amount). Returns NULL for the first row in each partition.
+- LEAD(sales_amount): Retrieves the sales_amount from the next row within the same region. Returns NULL for the last row in each partition.
