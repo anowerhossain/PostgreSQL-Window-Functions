@@ -84,3 +84,31 @@ Explanation
 
 - LAG(sales_amount): Retrieves the sales_amount from the previous row within the same region (based on descending order of sales_amount). Returns NULL for the first row in each partition.
 - LEAD(sales_amount): Retrieves the sales_amount from the next row within the same region. Returns NULL for the last row in each partition.
+
+## What is FIRST_VALUE and LAST_VALUE window functions?
+- FIRST_VALUE Returns the first value in a window frame. LAST_VALUE Returns the last value in a window frame. Those functions are useful to identify baseline and final values in a dataset.
+
+```sql
+SELECT 
+    region,
+    salesperson_id,
+    sales_amount,
+    FIRST_VALUE(sales_amount) OVER (PARTITION BY region ORDER BY sales_amount DESC) AS first_sale,
+    LAST_VALUE(sales_amount) OVER (PARTITION BY region ORDER BY sales_amount DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_sale
+FROM sales;
+```
+Results
+| Region | Salesperson ID | Sales Amount | First Sale | Last Sale |
+|--------|----------------|--------------|------------|-----------|
+| North  | 1              | 500          | 500        | 300       |
+| North  | 2              | 400          | 500        | 300       |
+| North  | 3              | 300          | 500        | 300       |
+| South  | 4              | 700          | 700        | 500       |
+| South  | 5              | 600          | 700        | 500       |
+| South  | 6              | 500          | 700        | 500       |
+
+Explanation
+
+- FIRST_VALUE(sales_amount): Fetches the highest sales_amount (based on descending order) for each region.
+- LAST_VALUE(sales_amount): Fetches the lowest sales_amount for each region using a complete window frame (ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING).
+
